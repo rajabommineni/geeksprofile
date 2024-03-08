@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geekprofile-email-deploy
+  namespace: default
+  labels:
+    app: geekprofile-email
+    tier: api
+spec:
+  selector:
+    matchLabels:
+      app: geekprofile-email
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: geekprofile-email
+        tier: api
+    spec:
+      containers:
+      - name: geekprofile-email
+        image: rajabops/geeksprofile:email
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+          name: pyport
+        env:
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: geekprofile-db-configmap
+                key: host
+                optional: true
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: geekprofile-db-secret
+                key: root
+                optional: true
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: geekprofile-db-secret
+                key: password
+                optional: true
+          - name: DB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: geekprofile-db-configmap
+                key: db_name
+                optional: true
+          - name: EMAIL_SERVER
+            value: email-server-service

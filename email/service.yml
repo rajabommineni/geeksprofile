@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: email-server-service
+  namespace: default
+  labels:
+    app: emailServer
+    tier: backend
+spec:
+  selector:
+    app: emailServer
+    tier: backend
+  ports:
+  - port: 5000
+    targetPort: emailserverport
+  clusterIP: None

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: geekprofile-db-service
+  namespace: default
+  labels:
+    app: geekprofile-db
+    tier: db
+spec:
+  selector:
+    app: geekprofile-db
+    tier: db
+  ports:
+  - port: 3306
+    targetPort: mysql
+  clusterIP: None

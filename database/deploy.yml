@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geekprofile-db-deploy
+  namespace: default
+  labels:
+    app: geekprofile-db
+    tier: db
+spec:
+  selector:
+    matchLabels:
+      app: geekprofile-db
+      tier: db
+  template:
+    metadata:
+      labels:
+        app: geekprofile-db
+        tier: db
+    spec:
+      containers:
+      - name: geekprofile-db
+        image: rajabops/geekprofile-mysqldb
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3306
+          name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: geekprofile-db-secret
+              key: password
+              optional: false
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: geekprofile-db-secret
+              key: user
+              optional: true
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: geekprofile-db-secret
+              key: password
+              optional: true
+        - name: MYSQL_DB
+          valueFrom:
+            configMapKeyRef:
+              name: geekprofile-db-configmap
+              key: db_name
+              optional: true
+

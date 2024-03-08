@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-server-deploy
+  namespace: default
+  labels:
+    app: emailServer
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: emailServer
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: emailServer
+        tier: backend
+    spec:
+      containers:
+      - name: email-server
+        image: rajabops/emailserver
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+          name: emailserverport

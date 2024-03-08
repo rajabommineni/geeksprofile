@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: geekprofile-db-configmap
+  namespace: default
+  labels:
+    app: geekprofile-db
+    tier: db
+data:
+  db_name: geekprofile
+  host: geekprofile-db-service
